@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -69,6 +69,8 @@ const slides = [
 ];
 
 const Onboarding = () => {
+  const scroll = useRef<any>();
+
   const [xValue] = useState(new Animated.Value(0));
   const [widthX, setwidthX] = useState<any>(new Animated.Value(0));
 
@@ -85,6 +87,7 @@ const Onboarding = () => {
     <View style={styles.container}>
       <Animated.View style={[styles.slider, {backgroundColor}]}>
         <Animated.ScrollView
+          ref={scroll}
           horizontal
           snapToInterval={width}
           decelerationRate="fast"
@@ -119,6 +122,14 @@ const Onboarding = () => {
           {slides.map(({subtitle, description}, index) => (
             <Subslide
               key={index.toString()}
+              onPress={() => {
+                if (scroll.current) {
+                  scroll.current.scrollTo({
+                    x: width * (index + 1),
+                    animated: true,
+                  });
+                }
+              }}
               {...{subtitle, description}}
               last={index === slides.length - 1}
             />
