@@ -1,8 +1,16 @@
 import React from 'react';
-import {Dimensions, StyleSheet, Text, View} from 'react-native';
+import {
+  Dimensions,
+  Image,
+  ImageRequireSource,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 
 const {width, height} = Dimensions.get('window');
 export const SLIDE_HEIGHT = 0.61 * height;
+export const BORDER_RADIUS = 75;
 
 const styles = StyleSheet.create({
   container: {
@@ -18,11 +26,13 @@ const styles = StyleSheet.create({
     lineHeight: 80,
     textAlign: 'center',
   },
+  
 });
 
 interface slideProps {
   title: string;
   right?: boolean;
+  
 }
 
 const Slide = ({title, right}: slideProps) => {
@@ -33,6 +43,7 @@ const Slide = ({title, right}: slideProps) => {
   ];
   return (
     <View style={styles.container}>
+      
       <View style={[styles.titleContainer, {transform}]}>
         <Text style={styles.title}>{title}</Text>
       </View>

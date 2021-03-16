@@ -1,20 +1,20 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {
   View,
-  Text,
+  Image,
   ScrollView,
   StyleSheet,
   Dimensions,
   Animated,
 } from 'react-native';
-import {multiply} from 'react-native-reanimated';
 import {useAnimation} from '../../utils/helpers/AnimationHelper';
 
-import Slide, {SLIDE_HEIGHT} from './Slide';
+import Slide, {SLIDE_HEIGHT, BORDER_RADIUS} from './Slide';
 import Subslide from './Subslide';
+import Dot from './Dot';
+import {Extrapolate} from 'react-native-reanimated';
 
 const {width, height} = Dimensions.get('window');
-const BORDER_RADIUS = 75;
 
 const styles = StyleSheet.create({
   container: {
@@ -31,9 +31,22 @@ const styles = StyleSheet.create({
   },
   footerContent: {
     flex: 1,
-    flexDirection: 'row',
     backgroundColor: 'white',
     borderTopLeftRadius: BORDER_RADIUS,
+  },
+  pagination: {
+    ...StyleSheet.absoluteFillObject,
+    height: BORDER_RADIUS,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 20,
+  },
+  underlay: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    overflow: 'hidden',
+    borderBottomRightRadius: BORDER_RADIUS,
   },
 });
 
@@ -44,6 +57,11 @@ const slides = [
     description:
       "Confused about your outfit? Don't worry! Find the best outfit here!",
     color: '#BFEAF5',
+    picture: {
+      src: require('../../../assets/1.png'),
+      width: 730,
+      height: 1095,
+    },
   },
   {
     title: 'Playful',
@@ -51,13 +69,23 @@ const slides = [
     description:
       'Hating the clothes in your wardrobe? Explore hundreds of outfit ideas',
     color: '#BEECC4',
+    picture: {
+      src: require('../../../assets/2.png'),
+      width: 690,
+      height: 1070,
+    },
   },
   {
-    title: 'Excentric',
+    title: 'Original',
     subtitle: 'Your Style, Your Way',
     description:
       'Create your individual & unique style and look amazing everyday',
     color: '#FFE4D9',
+    picture: {
+      src: require('../../../assets/3.png'),
+      width: 730,
+      height: 1095,
+    },
   },
   {
     title: 'Funky',
@@ -65,6 +93,11 @@ const slides = [
     description:
       'Discover the latest trends in fashion and explore your personality',
     color: '#FFDDDD',
+    picture: {
+      src: require('../../../assets/4.png'),
+      width: 616,
+      height: 898,
+    },
   },
 ];
 
@@ -86,6 +119,32 @@ const Onboarding = () => {
   return (
     <View style={styles.container}>
       <Animated.View style={[styles.slider, {backgroundColor}]}>
+        {slides.map(({picture}, index) => {
+          const opacity = xValue.interpolate({
+            inputRange: [
+              (index - 1) * width,
+              index * width,
+              (index + 1) * width,
+            ],
+            outputRange: [0, 1, 0],
+            extrapolate: Extrapolate.CLAMP,
+          });
+          return (
+            <Animated.View style={[styles.underlay, {opacity}]} key={index}>
+              <Image
+                source={picture.src}
+                resizeMode={'contain'}
+                style={{
+                  ...StyleSheet.absoluteFillObject,
+                  width,
+                  height: undefined,
+                  marginTop: height * 0.1,
+                }}
+              />
+            </Animated.View>
+          );
+        })}
+
         <Animated.ScrollView
           ref={scroll}
           horizontal
@@ -102,8 +161,12 @@ const Onboarding = () => {
               },
             },
           )}>
-          {slides.map(({title}, index) => (
-            <Slide key={index.toString()} {...{title}} right={!!(index % 2)} />
+          {slides.map(({title, picture}, index) => (
+            <Slide
+              key={index.toString()}
+              {...{title, picture}}
+              right={!!(index % 2)}
+            />
           ))}
         </Animated.ScrollView>
       </Animated.View>
@@ -111,30 +174,40 @@ const Onboarding = () => {
         <Animated.View
           style={[{...StyleSheet.absoluteFillObject}, {backgroundColor}]}
         />
-        <Animated.View
-          style={[
-            styles.footerContent,
-            {
-              width: width * slides.length - 1,
+        <View style={styles.footerContent}>
+          <View style={styles.pagination}>
+            {slides.map((_, index) => (
+              <Dot
+                key={index}
+                currentIndex={Animated.divide(xValue, width)}
+                {...{index, xValue}}
+              />
+            ))}
+          </View>
+          <Animated.View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              width: width * slides.length,
               transform: [{translateX: widthX}],
-            },
-          ]}>
-          {slides.map(({subtitle, description}, index) => (
-            <Subslide
-              key={index.toString()}
-              onPress={() => {
-                if (scroll.current) {
-                  scroll.current.scrollTo({
-                    x: width * (index + 1),
-                    animated: true,
-                  });
-                }
-              }}
-              {...{subtitle, description}}
-              last={index === slides.length - 1}
-            />
-          ))}
-        </Animated.View>
+            }}>
+            {slides.map(({subtitle, description}, index) => (
+              <Subslide
+                key={index.toString()}
+                onPress={() => {
+                  if (scroll.current) {
+                    scroll.current.scrollTo({
+                      x: width * (index + 1),
+                      animated: true,
+                    });
+                  }
+                }}
+                {...{subtitle, description}}
+                last={index === slides.length - 1}
+              />
+            ))}
+          </Animated.View>
+        </View>
       </View>
     </View>
   );
