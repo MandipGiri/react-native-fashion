@@ -13,6 +13,7 @@ import Slide, {SLIDE_HEIGHT, BORDER_RADIUS} from './Slide';
 import Subslide from './Subslide';
 import Dot from './Dot';
 import {Extrapolate} from 'react-native-reanimated';
+import {Routes, StackNavigationProps} from '../../components/Navigation';
 
 const {width, height} = Dimensions.get('window');
 
@@ -101,7 +102,7 @@ const slides = [
   },
 ];
 
-const Onboarding = () => {
+const Onboarding = ({navigation}: StackNavigationProps<Routes, 'Welcome'>) => {
   const scroll = useRef<any>();
 
   const [xValue] = useState(new Animated.Value(0));
@@ -191,21 +192,25 @@ const Onboarding = () => {
               width: width * slides.length,
               transform: [{translateX: widthX}],
             }}>
-            {slides.map(({subtitle, description}, index) => (
-              <Subslide
-                key={index.toString()}
-                onPress={() => {
-                  if (scroll.current) {
-                    scroll.current.scrollTo({
-                      x: width * (index + 1),
-                      animated: true,
-                    });
-                  }
-                }}
-                {...{subtitle, description}}
-                last={index === slides.length - 1}
-              />
-            ))}
+            {slides.map(({subtitle, description}, index) => {
+              const last = index === slides.length - 1;
+              return (
+                <Subslide
+                  key={index.toString()}
+                  onPress={() => {
+                    if (last) {
+                      navigation.navigate('Welcome');
+                    } else {
+                      scroll.current?.scrollTo({
+                        x: width * (index + 1),
+                        animated: true,
+                      });
+                    }
+                  }}
+                  {...{subtitle, description, last}}
+                />
+              );
+            })}
           </Animated.View>
         </View>
       </View>
