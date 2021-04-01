@@ -4,9 +4,9 @@ import {
   Image,
   ImageRequireSource,
   StyleSheet,
-  Text,
   View,
 } from 'react-native';
+import {Text} from '../../components';
 
 const {width, height} = Dimensions.get('window');
 export const SLIDE_HEIGHT = 0.61 * height;
@@ -20,19 +20,11 @@ const styles = StyleSheet.create({
     height: 100,
     justifyContent: 'center',
   },
-  title: {
-    fontSize: 80,
-    color: 'white',
-    lineHeight: 80,
-    textAlign: 'center',
-  },
-  
 });
 
 interface slideProps {
   title: string;
   right?: boolean;
-  
 }
 
 const Slide = ({title, right}: slideProps) => {
@@ -43,9 +35,8 @@ const Slide = ({title, right}: slideProps) => {
   ];
   return (
     <View style={styles.container}>
-      
       <View style={[styles.titleContainer, {transform}]}>
-        <Text style={styles.title}>{title}</Text>
+        <Text variant="hero">{title}</Text>
       </View>
     </View>
   );
