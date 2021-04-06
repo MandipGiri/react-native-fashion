@@ -4,7 +4,7 @@ import {
   createBox,
   useTheme as useReTheme,
   ThemeProvider as ReStyleThemeProvider,
-} from "@shopify/restyle";
+} from '@shopify/restyle';
 
 export const palette = {
   white: '#FFFFFF',
@@ -50,6 +50,7 @@ const theme = createTheme({
     m: 10,
     l: 25,
     xl: 75,
+    o: 0,
   },
   textVariants: {
     hero: {

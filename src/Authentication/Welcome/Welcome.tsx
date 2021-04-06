@@ -11,7 +11,7 @@ const picture = {
   height: 900,
 };
 
-const Welcome = ({navigation}: StackNavigationProps<Routes, 'Onboarding'>) => {
+const Welcome = ({navigation}: StackNavigationProps<Routes, 'Welcome'>) => {
   return (
     <Box flex={1} backgroundColor="background">
       <Box
@@ -52,12 +52,9 @@ const Welcome = ({navigation}: StackNavigationProps<Routes, 'Onboarding'>) => {
           <Button
             variant="primary"
             label="Have an account? Login"
-            onPress={() => navigation.navigate('Onboarding')}
+            onPress={() => navigation.navigate('Login')}
           />
-          <Button
-            label="Join us, it's Free"
-            onPress={() => navigation.navigate('Onboarding')}
-          />
+          <Button label="Join us, it's Free" onPress={() => true} />
           <BorderlessButton onPress={() => navigation.navigate('Onboarding')}>
             <Text variant="button" color="secondary">
               Forgot password?

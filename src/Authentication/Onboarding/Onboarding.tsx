@@ -102,7 +102,7 @@ const slides = [
   },
 ];
 
-const Onboarding = ({navigation}: StackNavigationProps<Routes, 'Welcome'>) => {
+const Onboarding = ({navigation}: StackNavigationProps<Routes, 'Onboarding'>) => {
   const scroll = useRef<any>();
 
   const [xValue] = useState(new Animated.Value(0));
