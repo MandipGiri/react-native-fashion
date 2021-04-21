@@ -1,7 +1,8 @@
 import React, {useEffect, useState, ReactElement, useCallback} from 'react';
 
 import {InitialState, NavigationContainer} from '@react-navigation/native';
-import {AsyncStorage, StatusBar} from 'react-native';
+import {StatusBar} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const NAVIGATION_STATE_KEY = `NAVIGATION_STATE_KEY-`;
 
@@ -44,7 +45,7 @@ const LoadAssets = ({assets, children}: LoadAssetsProps) => {
         const state = savedStateString
           ? JSON.parse(savedStateString)
           : undefined;
-        console.log(`state`, state)
+        console.log(`state`, state);
         setInitialState(state);
       } finally {
         setIsNavigationReady(true);
@@ -58,7 +59,10 @@ const LoadAssets = ({assets, children}: LoadAssetsProps) => {
 
   const onStateChange = useCallback(
     (state) =>
-      AsyncStorage.setItem(NAVIGATION_STATE_KEY, JSON.stringify(state)),
+      AsyncStorage.setItem(
+        NAVIGATION_STATE_KEY,
+        JSON.stringify(state),
+      ).then((res) => console.log(`statexxxx`, state)),
     [],
   );
 
