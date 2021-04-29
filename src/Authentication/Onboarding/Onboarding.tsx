@@ -14,10 +14,11 @@ import Subslide from './Subslide';
 import Dot from './Dot';
 import {Extrapolate} from 'react-native-reanimated';
 import {Routes, StackNavigationProps} from '../../components/Navigation';
+import { makeStyles, Theme } from '../../components/Theme';
 
 const {width, height} = Dimensions.get('window');
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme: Theme) => ({
   container: {
     flex: 1,
     backgroundColor: 'white',
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderBottomRightRadius: BORDER_RADIUS,
   },
-});
+}));
 
 const slides = [
   {
@@ -103,6 +104,8 @@ const slides = [
 ];
 
 const Onboarding = ({navigation}: StackNavigationProps<Routes, 'Onboarding'>) => {
+  const styles = useStyles();
+
   const scroll = useRef<any>();
 
   const [xValue] = useState(new Animated.Value(0));

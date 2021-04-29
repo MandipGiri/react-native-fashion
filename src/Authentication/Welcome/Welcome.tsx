@@ -1,8 +1,9 @@
 import React from 'react';
 import {Dimensions, StyleSheet, Image} from 'react-native';
 import {BorderlessButton} from 'react-native-gesture-handler';
-import {Box, theme, Button, Text} from '../../components';
+import {Box, Button, Text} from '../../components';
 import {Routes, StackNavigationProps} from '../../components/Navigation';
+import { useTheme } from '../../components/Theme';
 
 const {width} = Dimensions.get('window');
 const picture = {
@@ -12,6 +13,7 @@ const picture = {
 };
 
 const Welcome = ({navigation}: StackNavigationProps<Routes, 'Welcome'>) => {
+  const theme = useTheme()
   return (
     <Box flex={1} backgroundColor="background">
       <Box

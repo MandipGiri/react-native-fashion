@@ -1,17 +1,18 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {BorderlessButton} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Feather';
 import {Box, Text} from '..';
 
 interface CheckboxProps {
   label: string;
+  checked: boolean;
+  onChange: () => void;
 }
 
-const Checkbox = ({label}: CheckboxProps) => {
-  const [checked, setchecked] = useState(false);
+const Checkbox = ({label, onChange, checked}: CheckboxProps) => {
   return (
     <BorderlessButton
-      onPress={() => setchecked((c) => !c)}
+      onPress={() => onChange()}
       style={{justifyContent: 'center'}}>
       <Box flexDirection="row">
         <Box

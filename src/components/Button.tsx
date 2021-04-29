@@ -1,8 +1,7 @@
-import {useTheme} from '@shopify/restyle';
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {Text, StyleSheet} from 'react-native';
 import {RectButton} from 'react-native-gesture-handler';
-import {Theme} from './Theme';
+import {useTheme} from './Theme';
 
 const styles = StyleSheet.create({
   container: {
